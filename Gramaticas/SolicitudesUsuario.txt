@@ -1,0 +1,57 @@
+Tokens aceptados
+
+Anio = [1-9] Digito Digito Digito 
+mes = Digito Digito
+dia= Digito Digito 
+Digito = [0-9]
+Entero = [1-9][0-9]*  
+fecha = (Anio-mes-dia)
+solicitud =  ( ini_solicitudes | fin_solicitudes | < | > | ! | ini_solicitud | : | " | { | } | , | CREDENCIALES_USUARIO | [ | ] | fin_solicitud | fecha | cadena | cadena | USUARIO | PASSWORD )
+
+cadena = "[^*]~"
+cadena_sin_espacion = " ([:jletterdigit:] | ( |  ) | { | } | [ | ] | < | > | \ | . | * | + | ? | ^ | $ | / | . | " | ~ | ! | _ )+ ~"
+
+>> CREAR USUARIO
+
+( CREAR_USUARIO | FECHA_CREACION | solicitud )
+
+
+>> MODIFICAR USUARIO
+
+( MODIFICAR_USUARIO | USUARIO_ANTIGUO | USUARIO_NUEVO | NUEVO_PASSWORD | FECHA_MODIFICACION | solicitud )
+
+
+>> ELIMINAR USUARIO
+
+( ELIMINAR_USUARIO | solicitud )
+
+
+>> LOGIN USUARIO
+
+( LOGIN_USUARIO | solicitud )
+
+
+>> NUEVO FORMULARIO
+
+( NUEVO_FORMULARIO | PARAMETROS_FORMULARIO | ID | TITULO | NOMBRE | TEMA | temas | cadena | solicitud )
+ 
+temas = (Dark | White)
+
+>> ELIMINAR FORMULARIO
+
+( ID | id )
+
+id = "( - | _ | $ )[^*]~"
+
+>> MODIFICAR FORMULARIO
+
+( MODIFICAR_FORMULARIO | PARAMETROS_FORMULARIO | ID | TITULO | NOMBRE | )
+
+
+
+
+
+
+
+
+

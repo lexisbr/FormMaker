@@ -1,0 +1,19 @@
+<!ini_respuestas>
+    <!ini_respuesta:"NOMBRE_DE_LA_RESPUESTA">
+        {
+            "LOGIN_USUARIO":[{
+                "RESPUESTA":"Password incorrecto"
+            }]
+        }
+    <!fin_respuesta>
+
+    <!ini_respuesta:"NOMBRE_DE_LA_RESPUESTA">
+
+    <!fin_respuesta>
+
+    <!ini_respuesta:"NOMBRE_DE_LA_RESPUESTA">
+
+    <!fin_respuesta>
+
+<!fin_respuestas>
+
