@@ -1,6 +1,6 @@
 <!ini_solicitud:"     CREAR_USUARIO     ">
       { "   CREDENCIALES_USUARIO":[{
-            "    USUARIO": "juanito619",
+            "    USUARIO": "@asd_xas",
             "PASSWORD": "1123
             "
            }         

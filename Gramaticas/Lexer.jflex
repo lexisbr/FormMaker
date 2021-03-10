@@ -21,8 +21,7 @@ EXCLAMACION = "!"
 INI_SOLICITUD = "ini_solicitud"
 FIN_SOLICITUD = "fin_solicitud"
 PUNTOS = ":"
-CADENA_SIN_ESPACIOS = "\""[^\r\t\b\f\n ]~"\""
-CADENA = \"(\\.|[^\r\t\b\f\n \"\\])*\"
+CADENA_SIN_ESPACIOS = "\""[^\r\t\b\f\n ]+"\""
 CORCHETE_A = "["
 CORCHETE_C = "]"
 LLAVE_A = "{"
@@ -40,7 +39,6 @@ ELIMINAR_USUARIO = "ELIMINAR_USUARIO"
 LOGIN_USUARIO = "LOGIN_USUARIO"
 COMILLA = "\""
 
-%state STRING 
 
 %%
 
@@ -85,32 +83,12 @@ COMILLA = "\""
 
     {FIN_SOLICITUD} {  System.out.println("Fin solicitud: "+yytext());  }
 
-    /*{CADENA_SIN_ESPACIOS} {
-        string.setLength(0); string.append(yytext()); yybegin(STRING);
-    }*/
 
-
-    {CADENA} {
+    {CADENA_SIN_ESPACIOS} {
         System.out.println("Cadena: "+yytext());
      }   
 
     {ESPACIO} { }   
-}
-
-
-
-
-<STRING> {
-    {COMILLA} {
-        yybegin(YYINITIAL);
-        string.append(yytext());
-        System.out.println("Cadena "+string.toString());
-    }
-
-    [^\r\t\b\f\n ] {
-        string.append(yytext());
-    }  
-
 }
 
 [^]
