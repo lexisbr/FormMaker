@@ -4,89 +4,99 @@
 
 %public 
 %class Lexer
-%standalone
+%cup
+%cupdebug
 %line
 %column
 
-%{
-    StringBuffer string = new StringBuffer();
-
-%}
 
 SEPARADOR = \r|\r\n|\n
 ESPACIO = {SEPARADOR} | [ \t\f]
 MAYOR = ">"
 MENOR = "<"
 EXCLAMACION = "!"
-INI_SOLICITUD = "ini_solicitud"
-FIN_SOLICITUD = "fin_solicitud"
+SOLICITUD_CI = [Ss][Oo][Ll][Ii][Cc][Ii][Tt][Uu][Dd]
+INI_SOLICITUD = [Ii][Nn][Ii]_{SOLICITUD_CI}
+FIN_SOLICITUD = [Ff][Ii][Nn]_{SOLICITUD_CI}
 PUNTOS = ":"
-CADENA_SIN_ESPACIOS = "\""[^\r\t\b\f\n ]+"\""
+CADENA_WS = "\""[^\r\t\b\f\n ]+"\""
 CORCHETE_A = "["
 CORCHETE_C = "]"
 LLAVE_A = "{"
 LLAVE_C = "}"
 COMA = ","
+
+//Parametros 
 CREDENCIALES_USUARIO = "\""[ \r\t\b\f\n]*"CREDENCIALES_USUARIO"[ \r\t\b\f\n]*"\""
-CREAR_USUARIO = "\""[ \r\t\b\f\n]*"CREAR_USUARIO"[ \r\t\b\f\n]*"\""
 USUARIO = "\""[ \r\t\b\f\n]*"USUARIO"[ \r\t\b\f\n]*"\""
 PASSWORD = "\""[ \r\t\b\f\n]*"PASSWORD"[ \r\t\b\f\n]*"\""
-MODIFICAR_USUARIO = "MODIFICAR_USUARIO"
-USUARIO_ANTIGUO = "USUARIO_ANTIGUO"
-USUARIO_NUEVO = "USUARIO_NUEVO"
-NUEVO_PASSWORD = "NUEVO_PASSWORD"
-ELIMINAR_USUARIO = "ELIMINAR_USUARIO"
-LOGIN_USUARIO = "LOGIN_USUARIO"
-COMILLA = "\""
+USUARIO_ANTIGUO = "\""[ \r\t\b\f\n]*"USUARIO_ANTIGUO"[ \r\t\b\f\n]*"\""
+USUARIO_NUEVO = "\""[ \r\t\b\f\n]*"USUARIO_NUEVO"[ \r\t\b\f\n]*"\""
+NUEVO_PASSWORD = "\""[ \r\t\b\f\n]*"NUEVO_PASSWORD"[ \r\t\b\f\n]*"\""
+
+//Tags para solicitudes
+USUARIO_CI = [Uu][Ss][Uu][Aa][Rr][Ii][Oo]
+CREAR_USUARIO = "\""[ \r\t\b\f\n]*[Cc][Rr][Ee][Aa][Rr]_{USUARIO_CI}[ \r\t\b\f\n]*"\""
+MODIFICAR_USUARIO = "\""[ \r\t\b\f\n]*[Mm][Oo][Dd][Ii][Ff][Ii][Cc][Aa][Rr]_{USUARIO_CI}[ \r\t\b\f\n]*"\""
+ELIMINAR_USUARIO = "\""[ \r\t\b\f\n]*[Ee][Ll][Ii][Mm][Ii][Nn][Aa][Rr]_{USUARIO_CI}[ \r\t\b\f\n]*"\""
+LOGIN_USUARIO = "\""[ \r\t\b\f\n]*[Ll][Oo][Gg][Ii][Nn]_{USUARIO_CI}[ \r\t\b\f\n]*"\""
+
+%{
+    private Symbol symbol(int type, String lexeme) {
+        //System.out.printf("Token tipo %d, lexeme %s, en linea %d, columna %d\n", type, lexeme == null ? "" : lexeme, yyline + 1, yycolumn + 1);
+        return new Symbol(type, new Token(lexeme, yyline + 1, yycolumn + 1));
+    }
+
+%}
 
 
 %%
 
 <YYINITIAL> {
 
-    {CREDENCIALES_USUARIO} { 
-        System.out.println("Credenciales usuario: "+yytext());
-    }
+    {CREAR_USUARIO} { return symbol(CREAR_USUARIO,yytext()); }
+
+    {MODIFICAR_USUARIO} { return symbol(MODIFICAR_USUARIO,yytext()); }
+
+    {ELIMINAR_USUARIO} { return symbol(ELIMINAR_USUARIO,yytext()); }
+
+    {LOGIN_USUARIO} { return symbol(LOGIN_USUARIO,yytext()); }
+
+    {CREDENCIALES_USUARIO} { return symbol(CREDENCIALES_USUARIO,yytext()); }
+
+    {USUARIO} { return symbol(USUARIO,yytext()); }
+
+    {PASSWORD} { return symbol(PASSWORD,yytext()); }
+
+    {USUARIO_ANTIGUO} { return symbol(USUARIO_ANTIGUO,yytext()); }
+
+    {USUARIO_NUEVO} { return symbol(USUARIO_NUEVO,yytext()); }
+
+    {NUEVO_PASSWORD} { return symbol(NUEVO_PASSWORD,yytext()); }
+
+    {MAYOR} { return symbol(MAYOR,yytext()); }
+
+    {MENOR} { return symbol(MENOR,yytext()); }
     
-    {CREAR_USUARIO} { 
-        System.out.println("Crear usuario: "+yytext());
-    }
+    {COMA} { return symbol(COMA,yytext()); }
 
-    {USUARIO} { 
-        System.out.println("Usuario: "+yytext()); 
-    }
+    {EXCLAMACION} { return symbol(EXCLAMACION,yytext()); }
 
-    {PASSWORD} { 
-        System.out.println("Password: "+yytext()); 
-    }
+    {INI_SOLICITUD} { return symbol(INI_SOLICITUD,yytext()); }
 
-    {MAYOR} { System.out.println("Mayor: "+yytext());}
+    {PUNTOS} { return symbol(PUNTOS,yytext()); }
 
-    {MENOR} { System.out.println("Menor: "+yytext()); }
-    
-    {COMA} { System.out.println("Coma: "+yytext()); }
+    {LLAVE_A} { return symbol(LLAVE_A,yytext()); }
 
-    {EXCLAMACION} { System.out.println("Exclamacion: "+yytext()); }
+    {LLAVE_C} { return symbol(LLAVE_C,yytext()); }
 
+    {CORCHETE_A} { return symbol(CORCHETE_A,yytext()); }
 
-    {INI_SOLICITUD} { System.out.println("Inicio solicitud: "+yytext()); }
+    {CORCHETE_C} { return symbol(CORCHETE_C,yytext()); }
 
-    {PUNTOS} { System.out.println("Puntos: "+yytext()); }
+    {FIN_SOLICITUD} {  return symbol(FIN_SOLICITUD,yytext());  }
 
-    {LLAVE_A} { System.out.println("Llave que abre: "+yytext()); }
-
-    {LLAVE_C} { System.out.println("Llave que cierra: "+yytext()); }
-
-    {CORCHETE_A} { System.out.println("Corchete que abre: "+yytext()); }
-
-    {CORCHETE_C} { System.out.println("Corchete que cierra: "+yytext()); }
-
-    {FIN_SOLICITUD} {  System.out.println("Fin solicitud: "+yytext());  }
-
-
-    {CADENA_SIN_ESPACIOS} {
-        System.out.println("Cadena: "+yytext());
-     }   
+    {CADENA_WS} { return symbol(CADENA_WS,yytext()); }   
 
     {ESPACIO} { }   
 }

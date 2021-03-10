@@ -1,4 +1,4 @@
-<!ini_solicitud:"     CREAR_USUARIO     ">
+<!ini_soliciTud:"     MODIFICAR_usuario     ">
       { "   CREDENCIALES_USUARIO":[{
             "    USUARIO": "@asd_xas",
             "PASSWORD": "1123
@@ -6,4 +6,4 @@
            }         
          ]
       }
-<fin_solicitud!>
+<fin_soLiCitud!>
