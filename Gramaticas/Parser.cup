@@ -1,0 +1,67 @@
+package parser;
+import java_cup.runtime.*;
+import lexer.Token;
+import lexer.Lexer;
+
+parser code {:
+    public Parser(Lexer lex) {
+		super(lex);
+	}
+
+    @Override
+    public void syntax_error(Symbol st) {
+        Token error = (Token) st.value;
+        report_error("Error Sintactico con el Token:"+ error.getLexeme()+" este no pertenece a la estructura  >linea: "+error.getLine()+" >columna: "+error.getColumn() + "\n",null);
+    }
+
+:};
+
+//Simbolos terminales (Tokens)
+terminal Token INI_SOLICITUDES, FIN_SOLICITUDES, MAYOR, MENOR, EXCLAMACION, INI_SOLICITUD, FIN_SOLICITUD, 
+PUNTOS, CADENA_WS, CORCHETE_A,CORCHETE_C,LLAVE_A,LLAVE_C,COMA,CREDENCIALES_USUARIO,USUARIO,PASSWORD,
+USUARIO_ANTIGUO, USUARIO_NUEVO, NUEVO_PASSWORD, CREAR_USUARIO, MODIFICAR_USUARIO, ELIMINAR_USUARIO, LOGIN_USUARIO;
+
+//Simbolos no terminales
+
+non terminal inicio, solicitudes, solicitud, bloque_usuario;
+non terminal parametros, parametros_crear, parametros_modificar, parametros_eliminar, parametros_login;
+
+
+
+/* Gramatica */
+
+start with inicio;
+
+inicio ::= MENOR EXCLAMACION INI_SOLICITUDES MAYOR solicitudes MENOR EXCLAMACION FIN_SOLICITUDES MAYOR 
+;
+
+solicitudes ::= MENOR EXCLAMACION INI_SOLICITUD PUNTOS solicitud LLAVE_C CORCHETE_C LLAVE_C MENOR FIN_SOLICITUD EXCLAMACION MAYOR
+;
+
+solicitud ::= CREAR_USUARIO bloque_usuario parametros_crear 
+            | MODIFICAR_USUARIO bloque_usuario parametros_modificar
+            | ELIMINAR_USUARIO bloque_usuario parametros_eliminar
+            | LOGIN_USUARIO parametros_login
+;
+
+bloque_usuario ::= MAYOR LLAVE_A CREDENCIALES_USUARIO PUNTOS CORCHETE_A LLAVE_A
+;
+
+parametros_crear ::= USUARIO:user PUNTOS CADENA_WS COMA PASSWORD:contra PUNTOS CADENA_WS{:
+                        System.out.println("Crear usuario: "+user.getLexeme()+" Password: "+contra.getLexeme());
+                    :}
+                    |error 
+;
+
+parametros_modificar ::= USUARIO_ANTIGUO PUNTOS CADENA_WS COMA USUARIO_NUEVO PUNTOS CADENA_WS COMA NUEVO_PASSWORD PUNTOS CADENA_WS 
+                        | error
+;
+
+
+parametros_eliminar ::= USUARIO PUNTOS CADENA_WS
+                        | error
+;
+
+parametros_login ::= USUARIO PUNTOS CADENA_WS COMA PASSWORD PUNTOS CADENA_WS
+                        | error
+;

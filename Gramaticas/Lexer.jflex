@@ -1,4 +1,9 @@
 
+package lexer;
+import java_cup.runtime.Symbol;
+import parser.sym;
+import static parser.sym.*;
+
 
 %%
 
@@ -9,9 +14,13 @@
 %line
 %column
 
-
+//Espacios en blanco
 SEPARADOR = \r|\r\n|\n
 ESPACIO = {SEPARADOR} | [ \t\f]
+
+//Caracteres validos
+INI_SOLICITUDES = [Ii][Nn][Ii]_[Ss][Oo][Ll][Ii][Cc][Ii][Tt][Uu][Dd][Ee][Ss]
+FIN_SOLICITUDES = [Ff][Ii][Nn]_[Ss][Oo][Ll][Ii][Cc][Ii][Tt][Uu][Dd][Ee][Ss]
 MAYOR = ">"
 MENOR = "<"
 EXCLAMACION = "!"
@@ -20,6 +29,7 @@ INI_SOLICITUD = [Ii][Nn][Ii]_{SOLICITUD_CI}
 FIN_SOLICITUD = [Ff][Ii][Nn]_{SOLICITUD_CI}
 PUNTOS = ":"
 CADENA_WS = "\""[^\r\t\b\f\n ]+"\""
+CADENA_S = "\""[^*]"\""
 CORCHETE_A = "["
 CORCHETE_C = "]"
 LLAVE_A = "{"
@@ -33,17 +43,27 @@ PASSWORD = "\""[ \r\t\b\f\n]*"PASSWORD"[ \r\t\b\f\n]*"\""
 USUARIO_ANTIGUO = "\""[ \r\t\b\f\n]*"USUARIO_ANTIGUO"[ \r\t\b\f\n]*"\""
 USUARIO_NUEVO = "\""[ \r\t\b\f\n]*"USUARIO_NUEVO"[ \r\t\b\f\n]*"\""
 NUEVO_PASSWORD = "\""[ \r\t\b\f\n]*"NUEVO_PASSWORD"[ \r\t\b\f\n]*"\""
+PARAMETROS_FORMULARIO = "\""[ \r\t\b\f\n]*"PARAMETROS_FORMULARIO"[ \r\t\b\f\n]*"\""
+ID = "\""[ \r\t\b\f\n]*"ID"[ \r\t\b\f\n]*"\""
+TITULO = "\""[ \r\t\b\f\n]*"TITULO"[ \r\t\b\f\n]*"\""
+NOMBRE = "\""[ \r\t\b\f\n]*"NOMBRE"[ \r\t\b\f\n]*"\""
+ID_FORM = "\""("$"|"_"|"-")[^\r\t\b\f\n ]+"\""
+TITULO_FORM = "\""[^]+"\""
+
 
 //Tags para solicitudes
 USUARIO_CI = [Uu][Ss][Uu][Aa][Rr][Ii][Oo]
+FORMULARIO_CI = [Ff][Oo][Rr][Mm][Uu][Ll][Aa][Rr][Ii][Oo]
 CREAR_USUARIO = "\""[ \r\t\b\f\n]*[Cc][Rr][Ee][Aa][Rr]_{USUARIO_CI}[ \r\t\b\f\n]*"\""
 MODIFICAR_USUARIO = "\""[ \r\t\b\f\n]*[Mm][Oo][Dd][Ii][Ff][Ii][Cc][Aa][Rr]_{USUARIO_CI}[ \r\t\b\f\n]*"\""
 ELIMINAR_USUARIO = "\""[ \r\t\b\f\n]*[Ee][Ll][Ii][Mm][Ii][Nn][Aa][Rr]_{USUARIO_CI}[ \r\t\b\f\n]*"\""
 LOGIN_USUARIO = "\""[ \r\t\b\f\n]*[Ll][Oo][Gg][Ii][Nn]_{USUARIO_CI}[ \r\t\b\f\n]*"\""
+NUEVO_FORMULARIO = "\""[ \r\t\b\f\n]*[Nn][Uu][Ee][Vv][Oo]_{FORMULARIO_CI}[ \r\t\b\f\n]*"\""
+NUEVO_FORMULARIO = "\""[ \r\t\b\f\n]*[Nn][Uu][Ee][Vv][Oo]_{FORMULARIO_CI}[ \r\t\b\f\n]*"\""
 
 %{
     private Symbol symbol(int type, String lexeme) {
-        //System.out.printf("Token tipo %d, lexeme %s, en linea %d, columna %d\n", type, lexeme == null ? "" : lexeme, yyline + 1, yycolumn + 1);
+        System.out.printf("Token tipo %d, lexeme %s, en linea %d, columna %d\n", type, lexeme == null ? "" : lexeme, yyline + 1, yycolumn + 1);
         return new Symbol(type, new Token(lexeme, yyline + 1, yycolumn + 1));
     }
 
@@ -53,6 +73,10 @@ LOGIN_USUARIO = "\""[ \r\t\b\f\n]*[Ll][Oo][Gg][Ii][Nn]_{USUARIO_CI}[ \r\t\b\f\n]
 %%
 
 <YYINITIAL> {
+
+    {INI_SOLICITUDES} { return symbol(INI_SOLICITUDES,yytext()); }
+
+    {FIN_SOLICITUDES} { return symbol(FIN_SOLICITUDES,yytext()); }
 
     {CREAR_USUARIO} { return symbol(CREAR_USUARIO,yytext()); }
 
