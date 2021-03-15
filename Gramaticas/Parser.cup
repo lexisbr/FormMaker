@@ -19,12 +19,17 @@ parser code {:
 //Simbolos terminales (Tokens)
 terminal Token INI_SOLICITUDES, FIN_SOLICITUDES, MAYOR, MENOR, EXCLAMACION, INI_SOLICITUD, FIN_SOLICITUD, 
 PUNTOS, CADENA_WS, CORCHETE_A,CORCHETE_C,LLAVE_A,LLAVE_C,COMA,CREDENCIALES_USUARIO,USUARIO,PASSWORD,
-USUARIO_ANTIGUO, USUARIO_NUEVO, NUEVO_PASSWORD, CREAR_USUARIO, MODIFICAR_USUARIO, ELIMINAR_USUARIO, LOGIN_USUARIO;
-
+USUARIO_ANTIGUO, USUARIO_NUEVO, NUEVO_PASSWORD, CREAR_USUARIO, MODIFICAR_USUARIO, ELIMINAR_USUARIO, LOGIN_USUARIO,
+CADENA_S, OPCION_COMILLAS, OPCION_OR, ID, NO, SI, URL, TEMAS, TEMA, BOTON, CLASE, COMBO, FILAS, RADIO, ALINEACION_CADENA, 
+IMAGEN, INDICE, NOMBRE, TITULO, CHECKBOX, COLUMNAS, OPCIONES, REQUERIDO, ALINEACION, AREA_TEXTO, FORMULARIO, CAMPO_TEXTO,
+NOMBRE_CAMPO, TEXTO_VISIBLE, NUEVO_FORMULARIO, AGREGAR_COMPONENTE, ELIMINAR_COMPONENTE, ELIMINAR_FORMULARIO, MODIFICAR_FORMULARIO,
+MODIFICAR_COMPONENTE, PARAMETROS_FORMULARIO, PARAMETROS_COMPONENTE, ID_CADENA, FECHA, FECHA_CREACION, USUARIO_CREACION;
 //Simbolos no terminales
 
-non terminal inicio, solicitudes, solicitud, bloque_usuario;
-non terminal parametros, parametros_crear, parametros_modificar, parametros_eliminar, parametros_login;
+non terminal inicio, solicitudes, inicio_solicitudes, solicitud, bloque_usuario;
+non terminal parametros, parametros_crearUsuario, parametros_modificarUsuario, parametros_eliminarUsuario, parametros_login,
+parametros_nuevoForm, fecha, opcional_nuevoForm, bloque_forms, parametros_eliminarForm, parametros_modificarForm, parametros_modificarForm1,
+parametros_modificarForm2, parametros_modificarForm3 ;
 
 
 
@@ -32,36 +37,77 @@ non terminal parametros, parametros_crear, parametros_modificar, parametros_elim
 
 start with inicio;
 
-inicio ::= MENOR EXCLAMACION INI_SOLICITUDES MAYOR solicitudes MENOR EXCLAMACION FIN_SOLICITUDES MAYOR 
+inicio ::= MENOR EXCLAMACION INI_SOLICITUDES MAYOR inicio_solicitudes 
 ;
 
-solicitudes ::= MENOR EXCLAMACION INI_SOLICITUD PUNTOS solicitud LLAVE_C CORCHETE_C LLAVE_C MENOR FIN_SOLICITUD EXCLAMACION MAYOR
+inicio_solicitudes ::= solicitudes inicio_solicitudes  
+                        |MENOR EXCLAMACION FIN_SOLICITUDES MAYOR
 ;
 
-solicitud ::= CREAR_USUARIO bloque_usuario parametros_crear 
-            | MODIFICAR_USUARIO bloque_usuario parametros_modificar
-            | ELIMINAR_USUARIO bloque_usuario parametros_eliminar
-            | LOGIN_USUARIO parametros_login
+solicitudes ::= MENOR EXCLAMACION INI_SOLICITUD PUNTOS solicitud LLAVE_C CORCHETE_C LLAVE_C MENOR FIN_SOLICITUD EXCLAMACION MAYOR  
+;
+
+solicitud ::= CREAR_USUARIO bloque_usuario parametros_crearUsuario 
+            | MODIFICAR_USUARIO bloque_usuario parametros_modificarUsuario
+            | ELIMINAR_USUARIO bloque_usuario parametros_eliminarUsuario
+            | LOGIN_USUARIO bloque_usuario parametros_login
+            | NUEVO_FORMULARIO bloque_forms parametros_nuevoForm
+            | ELIMINAR_FORMULARIO bloque_forms parametros_eliminarForm
+            | MODIFICAR_FORMULARIO bloque_forms parametros_modificarForm
+            | error
 ;
 
 bloque_usuario ::= MAYOR LLAVE_A CREDENCIALES_USUARIO PUNTOS CORCHETE_A LLAVE_A
 ;
 
-parametros_crear ::= USUARIO:user PUNTOS CADENA_WS COMA PASSWORD:contra PUNTOS CADENA_WS{:
-                        System.out.println("Crear usuario: "+user.getLexeme()+" Password: "+contra.getLexeme());
+parametros_crearUsuario ::= USUARIO:user PUNTOS CADENA_WS COMA PASSWORD:contra PUNTOS CADENA_WS fecha {:
+                        //System.out.println("Crear usuario: "+user.getLexeme()+" Password: "+contra.getLexeme());
                     :}
-                    |error 
+                        |error 
 ;
 
-parametros_modificar ::= USUARIO_ANTIGUO PUNTOS CADENA_WS COMA USUARIO_NUEVO PUNTOS CADENA_WS COMA NUEVO_PASSWORD PUNTOS CADENA_WS 
-                        | error
+parametros_modificarUsuario ::= USUARIO_ANTIGUO PUNTOS CADENA_WS COMA USUARIO_NUEVO PUNTOS CADENA_WS COMA NUEVO_PASSWORD PUNTOS CADENA_WS fecha
+                            | error
 ;
 
 
-parametros_eliminar ::= USUARIO PUNTOS CADENA_WS
-                        | error
+parametros_eliminarUsuario ::= USUARIO PUNTOS CADENA_WS 
+                            | error
 ;
 
 parametros_login ::= USUARIO PUNTOS CADENA_WS COMA PASSWORD PUNTOS CADENA_WS
-                        | error
+                    | error
 ;
+
+bloque_forms ::= MAYOR LLAVE_A PARAMETROS_FORMULARIO PUNTOS CORCHETE_A LLAVE_A
+;
+
+parametros_nuevoForm  ::= ID PUNTOS ID_CADENA COMA TITULO PUNTOS CADENA_S COMA NOMBRE PUNTOS CADENA_WS COMA TEMA PUNTOS TEMAS opcional_nuevoForm 
+; 
+
+opcional_nuevoForm ::= COMA USUARIO_CREACION PUNTOS CADENA_WS COMA FECHA_CREACION PUNTOS FECHA
+                    |
+;
+
+parametros_eliminarForm ::= ID PUNTOS ID_CADENA 
+;
+
+parametros_modificarForm ::= ID PUNTOS ID_CADENA parametros_modificarForm1 parametros_modificarForm2 parametros_modificarForm3
+;
+
+parametros_modificarForm1 ::= COMA TITULO PUNTOS CADENA_S
+                            | 
+;
+
+parametros_modificarForm2 ::= COMA NOMBRE PUNTOS CADENA_WS
+                            |
+;
+
+parametros_modificarForm3 ::= COMA TEMA PUNTOS TEMAS 
+                            |
+;
+
+fecha ::= COMA FECHA_CREACION PUNTOS FECHA
+            |
+;
+

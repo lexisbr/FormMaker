@@ -8,32 +8,73 @@ package parser;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int MENOR = 5;
-  public static final int INI_SOLICITUD = 7;
-  public static final int NUEVO_PASSWORD = 21;
-  public static final int CREDENCIALES_USUARIO = 16;
+  public static final int NUEVO_FORMULARIO = 55;
+  public static final int BOTON = 35;
   public static final int FIN_SOLICITUD = 8;
-  public static final int PUNTOS = 9;
-  public static final int ELIMINAR_USUARIO = 24;
-  public static final int CREAR_USUARIO = 22;
-  public static final int USUARIO_NUEVO = 20;
-  public static final int COMA = 15;
+  public static final int ALINEACION = 49;
   public static final int INI_SOLICITUDES = 2;
-  public static final int MAYOR = 4;
-  public static final int EOF = 0;
-  public static final int EXCLAMACION = 6;
-  public static final int PASSWORD = 18;
-  public static final int USUARIO = 17;
-  public static final int error = 1;
+  public static final int NOMBRE = 43;
+  public static final int CHECKBOX = 45;
   public static final int FIN_SOLICITUDES = 3;
-  public static final int LOGIN_USUARIO = 25;
-  public static final int LLAVE_C = 14;
-  public static final int CADENA_WS = 10;
-  public static final int LLAVE_A = 13;
-  public static final int USUARIO_ANTIGUO = 19;
+  public static final int SI = 31;
+  public static final int ALINEACION_CADENA = 40;
+  public static final int INDICE = 42;
   public static final int CORCHETE_C = 12;
-  public static final int MODIFICAR_USUARIO = 23;
+  public static final int ID_CADENA = 63;
+  public static final int FECHA = 64;
   public static final int CORCHETE_A = 11;
+  public static final int LLAVE_C = 14;
+  public static final int CADENA_S = 26;
+  public static final int LLAVE_A = 13;
+  public static final int MODIFICAR_USUARIO = 23;
+  public static final int USUARIO = 17;
+  public static final int TEMAS = 33;
+  public static final int CREDENCIALES_USUARIO = 16;
+  public static final int TITULO = 44;
+  public static final int FORMULARIO = 51;
+  public static final int USUARIO_NUEVO = 20;
+  public static final int EXCLAMACION = 6;
+  public static final int CREAR_USUARIO = 22;
+  public static final int ID = 29;
+  public static final int CADENA_WS = 10;
+  public static final int EOF = 0;
+  public static final int CLASE = 36;
+  public static final int OPCION_OR = 28;
+  public static final int error = 1;
+  public static final int COMA = 15;
+  public static final int ELIMINAR_USUARIO = 24;
+  public static final int MENOR = 5;
+  public static final int URL = 32;
+  public static final int PASSWORD = 18;
+  public static final int OPCION_COMILLAS = 27;
+  public static final int INI_SOLICITUD = 7;
+  public static final int FECHA_CREACION = 65;
+  public static final int MAYOR = 4;
+  public static final int USUARIO_CREACION = 66;
+  public static final int PUNTOS = 9;
+  public static final int TEMA = 34;
+  public static final int REQUERIDO = 48;
+  public static final int NUEVO_PASSWORD = 21;
+  public static final int RADIO = 39;
+  public static final int NO = 30;
+  public static final int PARAMETROS_COMPONENTE = 62;
+  public static final int IMAGEN = 41;
+  public static final int MODIFICAR_COMPONENTE = 60;
+  public static final int NOMBRE_CAMPO = 53;
+  public static final int MODIFICAR_FORMULARIO = 59;
+  public static final int PARAMETROS_FORMULARIO = 61;
+  public static final int ELIMINAR_COMPONENTE = 57;
+  public static final int USUARIO_ANTIGUO = 19;
+  public static final int COMBO = 37;
+  public static final int ELIMINAR_FORMULARIO = 58;
+  public static final int AGREGAR_COMPONENTE = 56;
+  public static final int COLUMNAS = 46;
+  public static final int FILAS = 38;
+  public static final int AREA_TEXTO = 50;
+  public static final int CAMPO_TEXTO = 52;
+  public static final int LOGIN_USUARIO = 25;
+  public static final int TEXTO_VISIBLE = 54;
+  public static final int OPCIONES = 47;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -60,7 +101,48 @@ public class sym {
   "CREAR_USUARIO",
   "MODIFICAR_USUARIO",
   "ELIMINAR_USUARIO",
-  "LOGIN_USUARIO"
+  "LOGIN_USUARIO",
+  "CADENA_S",
+  "OPCION_COMILLAS",
+  "OPCION_OR",
+  "ID",
+  "NO",
+  "SI",
+  "URL",
+  "TEMAS",
+  "TEMA",
+  "BOTON",
+  "CLASE",
+  "COMBO",
+  "FILAS",
+  "RADIO",
+  "ALINEACION_CADENA",
+  "IMAGEN",
+  "INDICE",
+  "NOMBRE",
+  "TITULO",
+  "CHECKBOX",
+  "COLUMNAS",
+  "OPCIONES",
+  "REQUERIDO",
+  "ALINEACION",
+  "AREA_TEXTO",
+  "FORMULARIO",
+  "CAMPO_TEXTO",
+  "NOMBRE_CAMPO",
+  "TEXTO_VISIBLE",
+  "NUEVO_FORMULARIO",
+  "AGREGAR_COMPONENTE",
+  "ELIMINAR_COMPONENTE",
+  "ELIMINAR_FORMULARIO",
+  "MODIFICAR_FORMULARIO",
+  "MODIFICAR_COMPONENTE",
+  "PARAMETROS_FORMULARIO",
+  "PARAMETROS_COMPONENTE",
+  "ID_CADENA",
+  "FECHA",
+  "FECHA_CREACION",
+  "USUARIO_CREACION"
   };
 }
 
