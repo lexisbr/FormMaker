@@ -38,6 +38,7 @@ LLAVE_C = "}"
 COMA = ","
 
 //Parametros
+NUMERO_ENTERO = [0-9]+
 ENTERO = [1-9]+ 
 DIGITO = [0-9]
 ID_CADENA = "\""("$"|"_"|"-")[^\r\t\b\f\n ]+"\""
@@ -114,6 +115,8 @@ MODIFICAR_COMPONENTE = "\""[ \r\t\b\f\n]*"MODIFICAR_COMPONENTE"[ \r\t\b\f\n]*"\"
 
 <YYINITIAL> {
 
+    {NUMERO_ENTERO} { return symbol(NUMERO_ENTERO,yytext()); }
+
     {INI_SOLICITUDES} { return symbol(INI_SOLICITUDES,yytext()); }
 
     {FIN_SOLICITUDES} { return symbol(FIN_SOLICITUDES,yytext()); }
@@ -169,6 +172,8 @@ MODIFICAR_COMPONENTE = "\""[ \r\t\b\f\n]*"MODIFICAR_COMPONENTE"[ \r\t\b\f\n]*"\"
     {AREA_TEXTO} { return symbol(AREA_TEXTO,yytext()); }
 
     {CHECKBOX} { return symbol(CHECKBOX,yytext()); }
+
+    {FICHERO} { return symbol(FICHERO,yytext()); }
 
     {RADIO} { return symbol(RADIO,yytext()); }
 

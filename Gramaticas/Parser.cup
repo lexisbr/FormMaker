@@ -20,16 +20,17 @@ parser code {:
 terminal Token INI_SOLICITUDES, FIN_SOLICITUDES, MAYOR, MENOR, EXCLAMACION, INI_SOLICITUD, FIN_SOLICITUD, 
 PUNTOS, CADENA_WS, CORCHETE_A,CORCHETE_C,LLAVE_A,LLAVE_C,COMA,CREDENCIALES_USUARIO,USUARIO,PASSWORD,
 USUARIO_ANTIGUO, USUARIO_NUEVO, NUEVO_PASSWORD, CREAR_USUARIO, MODIFICAR_USUARIO, ELIMINAR_USUARIO, LOGIN_USUARIO,
-CADENA_S, OPCION_COMILLAS, OPCION_OR, ID, NO, SI, URL, TEMAS, TEMA, BOTON, CLASE, COMBO, FILAS, RADIO, ALINEACION_CADENA, 
-IMAGEN, INDICE, NOMBRE, TITULO, CHECKBOX, COLUMNAS, OPCIONES, REQUERIDO, ALINEACION, AREA_TEXTO, FORMULARIO, CAMPO_TEXTO,
+CADENA_S, ID, NO, SI, URL, TEMAS, TEMA, BOTON, CLASE, COMBO, FILAS, RADIO, ALINEACION_CADENA, 
+IMAGEN, INDICE, NOMBRE, TITULO, CHECKBOX, COLUMNAS, OPCIONES, REQUERIDO, ALINEACION, FICHERO, AREA_TEXTO, FORMULARIO, CAMPO_TEXTO,
 NOMBRE_CAMPO, TEXTO_VISIBLE, NUEVO_FORMULARIO, AGREGAR_COMPONENTE, ELIMINAR_COMPONENTE, ELIMINAR_FORMULARIO, MODIFICAR_FORMULARIO,
-MODIFICAR_COMPONENTE, PARAMETROS_FORMULARIO, PARAMETROS_COMPONENTE, ID_CADENA, FECHA, FECHA_CREACION, USUARIO_CREACION;
+MODIFICAR_COMPONENTE, PARAMETROS_FORMULARIO, PARAMETROS_COMPONENTE, ID_CADENA, FECHA, FECHA_CREACION, USUARIO_CREACION, NUMERO_ENTERO;
 //Simbolos no terminales
 
 non terminal inicio, solicitudes, inicio_solicitudes, solicitud, bloque_usuario;
 non terminal parametros, parametros_crearUsuario, parametros_modificarUsuario, parametros_eliminarUsuario, parametros_login,
-parametros_nuevoForm, fecha, opcional_nuevoForm, bloque_forms, parametros_eliminarForm, parametros_modificarForm, parametros_modificarForm1,
-parametros_modificarForm2, parametros_modificarForm3 ;
+parametros_nuevoForm, fecha, opcional_nuevoFormUsuario, opcional_nuevoFormFecha, bloque_forms, parametros_eliminarForm, parametros_modificarForm, parametros_modificarForm1,
+parametros_modificarForm2, parametros_modificarForm3, bloque_componentes, parametros_agregarComponente, parametros_componente, parametro_alineacion, parametros_requerido,
+parametros_requeridoOpciones, parametros_opciones, parametros_eliminarComponentes, parametros_modificarComponente, clases_modificar;
 
 
 
@@ -54,6 +55,9 @@ solicitud ::= CREAR_USUARIO bloque_usuario parametros_crearUsuario
             | NUEVO_FORMULARIO bloque_forms parametros_nuevoForm
             | ELIMINAR_FORMULARIO bloque_forms parametros_eliminarForm
             | MODIFICAR_FORMULARIO bloque_forms parametros_modificarForm
+            | AGREGAR_COMPONENTE bloque_componentes parametros_agregarComponente
+            | ELIMINAR_COMPONENTE bloque_componentes parametros_eliminarComponentes
+            | MODIFICAR_COMPONENTE bloque_componentes parametros_modificarComponente
             | error
 ;
 
@@ -82,11 +86,13 @@ parametros_login ::= USUARIO PUNTOS CADENA_WS COMA PASSWORD PUNTOS CADENA_WS
 bloque_forms ::= MAYOR LLAVE_A PARAMETROS_FORMULARIO PUNTOS CORCHETE_A LLAVE_A
 ;
 
-parametros_nuevoForm  ::= ID PUNTOS ID_CADENA COMA TITULO PUNTOS CADENA_S COMA NOMBRE PUNTOS CADENA_WS COMA TEMA PUNTOS TEMAS opcional_nuevoForm 
+parametros_nuevoForm  ::= ID PUNTOS ID_CADENA COMA TITULO PUNTOS CADENA_S COMA NOMBRE PUNTOS CADENA_WS COMA TEMA PUNTOS TEMAS opcional_nuevoFormUsuario opcional_nuevoFormFecha 
 ; 
 
-opcional_nuevoForm ::= COMA USUARIO_CREACION PUNTOS CADENA_WS COMA FECHA_CREACION PUNTOS FECHA
-                    |
+opcional_nuevoFormUsuario ::= COMA USUARIO_CREACION PUNTOS CADENA_WS 
+;
+
+opcional_nuevoFormFecha ::= COMA FECHA_CREACION PUNTOS FECHA
 ;
 
 parametros_eliminarForm ::= ID PUNTOS ID_CADENA 
@@ -96,18 +102,51 @@ parametros_modificarForm ::= ID PUNTOS ID_CADENA parametros_modificarForm1 param
 ;
 
 parametros_modificarForm1 ::= COMA TITULO PUNTOS CADENA_S
-                            | 
 ;
 
 parametros_modificarForm2 ::= COMA NOMBRE PUNTOS CADENA_WS
-                            |
 ;
 
 parametros_modificarForm3 ::= COMA TEMA PUNTOS TEMAS 
-                            |
 ;
 
+bloque_componentes ::= MAYOR LLAVE_A PARAMETROS_COMPONENTE PUNTOS CORCHETE_A LLAVE_A
+;
+
+parametros_agregarComponente ::= ID PUNTOS ID_CADENA COMA FORMULARIO PUNTOS ID_CADENA COMA CLASE PUNTOS parametros_componente 
+;
+
+parametros_componente ::= CAMPO_TEXTO COMA INDICE PUNTOS NUMERO_ENTERO COMA TEXTO_VISIBLE PUNTOS CADENA_S parametro_alineacion parametros_requerido
+                        | AREA_TEXTO COMA INDICE PUNTOS NUMERO_ENTERO COMA TEXTO_VISIBLE PUNTOS CADENA_S parametro_alineacion parametros_requerido COMA FILAS PUNTOS NUMERO_ENTERO COMA COLUMNAS PUNTOS NUMERO_ENTERO
+                        | parametros_opciones COMA INDICE PUNTOS NUMERO_ENTERO COMA TEXTO_VISIBLE PUNTOS CADENA_S parametro_alineacion parametros_requerido COMA OPCIONES PUNTOS CADENA_S 
+                        | FICHERO COMA INDICE PUNTOS NUMERO_ENTERO COMA TEXTO_VISIBLE PUNTOS CADENA_S parametro_alineacion parametros_requerido 
+                        | IMAGEN COMA INDICE PUNTOS NUMERO_ENTERO COMA URL PUNTOS CADENA_WS COMA TEXTO_VISIBLE PUNTOS CADENA_S parametro_alineacion 
+                        | BOTON COMA INDICE PUNTOS NUMERO_ENTERO COMA TEXTO_VISIBLE PUNTOS CADENA_S parametro_alineacion
+;
+
+parametros_opciones ::= CHECKBOX
+                        | RADIO 
+                        | COMBO
+;
+
+parametro_alineacion ::= COMA ALINEACION PUNTOS ALINEACION_CADENA 
+;
+
+parametros_requerido ::= COMA REQUERIDO PUNTOS parametros_requeridoOpciones
+;
+
+parametros_requeridoOpciones ::= SI
+                                | NO
+;
+
+parametros_eliminarComponentes ::= ID PUNTOS ID_CADENA COMA FORMULARIO PUNTOS ID_CADENA
+;
+
+parametros_modificarComponente ::=  ID PUNTOS ID_CADENA COMA FORMULARIO PUNTOS ID_CADENA clases_modificar
+;
+
+clases_modificar ::= COMA CLASE 
+
 fecha ::= COMA FECHA_CREACION PUNTOS FECHA
-            |
 ;
 
